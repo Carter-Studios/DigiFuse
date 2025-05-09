@@ -1,0 +1,123 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+  const mainDiv = document.querySelector('.main');
+  const inputs = document.querySelectorAll('.wave-group');
+  const button = document.querySelector('.pay-btn');
+  let storedValue = 0;
+  let originalHeight = 0;
+
+  function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.style.color = '#ff4444';
+    errorDiv.style.marginTop = '10px';
+    errorDiv.style.fontFamily = 'Cascadia Code, sans-serif';
+    errorDiv.textContent = message;
+    errorDiv.style.opacity = '0';
+    mainDiv.appendChild(errorDiv);
+    setTimeout(() => errorDiv.style.opacity = '1', 10);
+    setTimeout(() => {
+      errorDiv.style.opacity = '0';
+      setTimeout(() => errorDiv.remove(), 300);
+    }, 2000);
+  }
+
+  function createLoadingText(text) {
+    const loadingDiv = document.createElement('div');
+    loadingDiv.style.fontFamily = 'Cascadia Code, sans-serif';
+    loadingDiv.style.opacity = '0';
+    loadingDiv.style.transition = 'opacity 0.3s';
+    loadingDiv.innerHTML = text + '<span class="dots"><span>.</span><span>.</span><span>.</span></span>';
+    
+    const style = document.createElement('style');
+    style.textContent = `
+      .dots span { 
+        opacity: 0;
+        animation: dot 1.5s infinite;
+        animation-fill-mode: forwards;
+      }
+      .dots span:nth-child(2) { animation-delay: 0.5s; }
+      .dots span:nth-child(3) { animation-delay: 1s; }
+      @keyframes dot {
+        0% { opacity: 0; }
+        50% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return loadingDiv;
+  }
+
+  async function animateSequence() {
+    const originalWidth = mainDiv.offsetWidth;
+    const originalHeight = mainDiv.offsetHeight;
+    mainDiv.style.transition = 'all 0.5s ease';
+    mainDiv.style.transform = 'translate(-50%, -50%) scale(1.2)';
+
+    // Fade out inputs and button
+    inputs.forEach(input => input.style.opacity = '0');
+    button.style.opacity = '0';
+    await new Promise(r => setTimeout(r, 500));
+    inputs.forEach(input => input.style.display = 'none');
+    button.style.display = 'none';
+
+    // First loading sequence
+    const loading1 = createLoadingText('Connecting to banking API');
+    mainDiv.appendChild(loading1);
+    setTimeout(() => loading1.style.opacity = '1', 10);
+    await new Promise(r => setTimeout(r, 3000));
+    loading1.style.opacity = '0';
+    await new Promise(r => setTimeout(r, 300));
+    loading1.remove();
+
+    // Second loading sequence
+    const loading2 = createLoadingText('Authorizing');
+    mainDiv.appendChild(loading2);
+    setTimeout(() => loading2.style.opacity = '1', 10);
+    await new Promise(r => setTimeout(r, 3000));
+    loading2.style.opacity = '0';
+    await new Promise(r => setTimeout(r, 300));
+    loading2.remove();
+
+    // Show result
+    const resultDiv = document.createElement('div');
+    resultDiv.style.fontFamily = 'Cascadia Code, sans-serif';
+    resultDiv.style.fontSize = '24px';
+    resultDiv.style.opacity = '0';
+    resultDiv.style.transition = 'opacity 0.3s';
+    resultDiv.textContent = storedValue;
+    mainDiv.appendChild(resultDiv);
+    setTimeout(() => resultDiv.style.opacity = '1', 10);
+    
+    await new Promise(r => setTimeout(r, 2000));
+    
+    // Reset everything
+    resultDiv.style.opacity = '0';
+    await new Promise(r => setTimeout(r, 300));
+    resultDiv.remove();
+    
+    mainDiv.style.transform = 'translate(-50%, -50%) scale(1)';
+    await new Promise(r => setTimeout(r, 500));
+    
+    inputs.forEach(input => {
+      input.style.display = '';
+      input.querySelector('input').value = '';
+      setTimeout(() => input.style.opacity = '1', 10);
+    });
+    button.style.display = '';
+    setTimeout(() => button.style.opacity = '1', 10);
+  }
+
+  button.addEventListener('click', () => {
+    const num1 = parseInt(inputs[0].querySelector('input').value);
+    const num2 = parseInt(inputs[1].querySelector('input').value);
+
+    if (isNaN(num1) || isNaN(num2)) {
+      showError('Please enter valid integers');
+      return;
+    }
+
+    storedValue = Math.floor((num1 + num2) / 3);
+    animateSequence();
+  });
+});
