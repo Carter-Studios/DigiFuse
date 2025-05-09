@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface FuseButtonProps {
   type?: "button" | "submit" | "reset";
 }
 
 const FuseButton: React.FC<FuseButtonProps> = ({ type = "button" }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
   return (
     <button 
       type={type}
       className="fuse-btn"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <span>Fuse</span>
+      <span className="relative overflow-hidden">
+        <span className={`inline-block transition-transform duration-300 ${isHovered ? 'translate-y-[-100%]' : ''}`}>
+          Fuse
+        </span>
+        <span className={`absolute top-0 left-0 transition-transform duration-300 ${isHovered ? 'translate-y-0' : 'translate-y-[100%]'}`}>
+          Fuse
+        </span>
+      </span>
       <div className="icon-container">
         <svg viewBox="0 0 24 24" className="icon card-icon">
           <path

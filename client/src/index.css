@@ -1,7 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@300;400;600&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@300;400;600&display=swap');
 
 :root {
   --background: 35 5% 11%;
@@ -354,4 +354,120 @@
 
 .scale-down {
   transform: translate(-50%, -50%) scale(1);
+}
+
+/* Continue button */
+.continue-btn {
+  background-color: transparent;
+  color: hsl(var(--primary));
+  border: 1px solid hsl(var(--primary));
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-family: 'Cascadia Code', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.continue-btn:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(107, 143, 113, 0.2),
+    transparent
+  );
+  transition: all 0.6s;
+}
+
+.continue-btn:hover {
+  background-color: hsl(var(--primary));
+  color: white;
+  transform: translateY(-2px);
+}
+
+.continue-btn:hover:before {
+  left: 100%;
+}
+
+.continue-btn:active {
+  transform: translateY(0);
+}
+
+/* Shake animation for error */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+.shake-animation {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* Enhanced animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Result animation */
+.result-appear {
+  opacity: 0;
+  transform: scale(0.8);
+  animation: resultAppear 0.8s forwards;
+}
+
+@keyframes resultAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

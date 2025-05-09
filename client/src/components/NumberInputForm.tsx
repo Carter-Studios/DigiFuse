@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FuseButton from "./FuseButton";
 
 interface NumberInputFormProps {
@@ -9,6 +9,14 @@ const NumberInputForm: React.FC<NumberInputFormProps> = ({ onCalculate }) => {
   const [num1, setNum1] = useState<string>("");
   const [num2, setNum2] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Clear error message when user starts typing again
+    if (error && (num1 || num2)) {
+      setError(null);
+    }
+  }, [num1, num2, error]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +30,9 @@ const NumberInputForm: React.FC<NumberInputFormProps> = ({ onCalculate }) => {
     
     if (isNaN(number1) || isNaN(number2)) {
       setError("Please enter valid integers");
+      // Shake animation for error
+      setIsTyping(true);
+      setTimeout(() => setIsTyping(false), 500);
       return;
     }
     
@@ -41,7 +52,7 @@ const NumberInputForm: React.FC<NumberInputFormProps> = ({ onCalculate }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center gap-6 w-full">
-      <div className="wave-group">
+      <div className={`wave-group transition-all duration-300 ${error && !isTyping ? 'shake-animation' : ''}`}>
         <input
           required
           type="text"
@@ -49,6 +60,7 @@ const NumberInputForm: React.FC<NumberInputFormProps> = ({ onCalculate }) => {
           value={num1}
           onChange={(e) => setNum1(e.target.value)}
           onKeyDown={validateNumberInput}
+          autoComplete="off"
         />
         <span className="bar"></span>
         <label className="label">
@@ -62,7 +74,7 @@ const NumberInputForm: React.FC<NumberInputFormProps> = ({ onCalculate }) => {
         </label>
       </div>
       
-      <div className="wave-group">
+      <div className={`wave-group transition-all duration-300 ${error && !isTyping ? 'shake-animation' : ''}`}>
         <input
           required
           type="text"
@@ -70,6 +82,7 @@ const NumberInputForm: React.FC<NumberInputFormProps> = ({ onCalculate }) => {
           value={num2}
           onChange={(e) => setNum2(e.target.value)}
           onKeyDown={validateNumberInput}
+          autoComplete="off"
         />
         <span className="bar"></span>
         <label className="label">
