@@ -1,0 +1,574 @@
+/* Base styles */
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@300;400;600&display=swap');
+
+:root {
+  --background: #1D1E18;
+  --foreground: #fafafa;
+  --primary: #6B8F71;
+  --primary-light: #AAD2BA;
+  --radius: 0.5rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--background);
+  font-family: 'Cascadia Code', monospace;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  color: var(--foreground);
+}
+
+/* Ripple Background */
+.ripple-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--primary-light);
+  animation: ripple 15s infinite;
+  box-shadow: 0px 0px 1px 0px var(--primary);
+}
+
+.small {
+  width: 200px;
+  height: 200px;
+  left: -100px;
+  bottom: -100px;
+}
+
+.medium {
+  width: 400px;
+  height: 400px;
+  left: -200px;
+  bottom: -200px;
+}
+
+.large {
+  width: 600px;
+  height: 600px;
+  left: -300px;
+  bottom: -300px;
+}
+
+.xlarge {
+  width: 800px;
+  height: 800px;
+  left: -400px;
+  bottom: -400px;
+}
+
+.xxlarge {
+  width: 1000px;
+  height: 1000px;
+  left: -500px;
+  bottom: -500px;
+}
+
+.shade1 {
+  opacity: 0.2;
+}
+
+.shade2 {
+  opacity: 0.5;
+}
+
+.shade3 {
+  opacity: 0.7;
+}
+
+.shade4 {
+  opacity: 0.8;
+}
+
+.shade5 {
+  opacity: 0.9;
+}
+
+@keyframes ripple {
+  0%, 100% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Main Container */
+.main-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 420px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  box-shadow: 
+    0 5px 15px rgba(107, 143, 113, 0.4),
+    0 25px 30px rgba(170, 210, 186, 0.3),
+    0 50px 50px rgba(14, 0, 3, 0.2),
+    0 70px 70px rgba(107, 143, 113, 0.1);
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--background);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.scale-up {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.scale-down {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Number Form */
+.number-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Wave Group */
+.wave-group {
+  position: relative;
+  width: 100%;
+  max-width: 250px;
+}
+
+.wave-group .input {
+  font-size: 16px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #515151;
+  background: transparent;
+  font-family: 'Cascadia Code', monospace;
+  color: #1D1E18;
+}
+
+.wave-group .input:focus {
+  outline: none;
+}
+
+.wave-group .label {
+  color: #999;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  display: flex;
+}
+
+.wave-group .label-char {
+  transition: 0.2s ease all;
+  transition-delay: calc(var(--index) * .05s);
+}
+
+.wave-group .input:focus ~ .label .label-char,
+.wave-group .input:valid ~ .label .label-char {
+  transform: translateY(-20px);
+  font-size: 14px;
+  color: var(--primary);
+}
+
+.wave-group .bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.wave-group .bar:before,
+.wave-group .bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: var(--primary);
+  transition: 0.2s ease all;
+}
+
+.wave-group .bar:before {
+  left: 50%;
+}
+
+.wave-group .bar:after {
+  right: 50%;
+}
+
+.wave-group .input:focus ~ .bar:before,
+.wave-group .input:focus ~ .bar:after {
+  width: 50%;
+}
+
+/* Fuse Button */
+.fuse-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--background);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: 'Cascadia Code', monospace;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.fuse-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15);
+}
+
+.text-container {
+  position: relative;
+  overflow: hidden;
+  height: 1.2em;
+}
+
+.text-default, .text-hover {
+  display: block;
+  transition: transform 0.3s;
+}
+
+.text-hover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.fuse-btn:hover .text-default {
+  transform: translateY(-100%);
+}
+
+.fuse-btn:hover .text-hover {
+  transform: translateY(-100%);
+}
+
+.icon-container {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  color: var(--primary-light);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.default-icon {
+  opacity: 1;
+  visibility: visible;
+}
+
+.fuse-btn:hover .default-icon {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.fuse-btn:hover .card-icon {
+  animation: iconRotate 2.5s infinite;
+  animation-delay: 0s;
+}
+
+.fuse-btn:hover .payment-icon {
+  animation: iconRotate 2.5s infinite;
+  animation-delay: 0.5s;
+}
+
+.fuse-btn:hover .dollar-icon {
+  animation: iconRotate 2.5s infinite;
+  animation-delay: 1s;
+}
+
+.fuse-btn:hover .check-icon {
+  animation: iconRotate 2.5s infinite;
+  animation-delay: 1.5s;
+}
+
+.fuse-btn:active .icon {
+  animation: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.fuse-btn:active .check-icon {
+  animation: checkmarkAppear 0.6s ease forwards;
+  visibility: visible;
+}
+
+/* Error message */
+.error-message {
+  color: #ff4444;
+  font-size: 0.875rem;
+  height: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Processing View */
+.processing-view {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.processing-text {
+  font-size: 1.125rem;
+  color: var(--background);
+}
+
+/* Result View */
+.result-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-label {
+  font-size: 0.875rem;
+  color: rgba(29, 30, 24, 0.7);
+  margin-bottom: 0.25rem;
+}
+
+.result-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+/* Continue button */
+.continue-btn {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-family: 'Cascadia Code', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.continue-btn:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(107, 143, 113, 0.2),
+    transparent
+  );
+  transition: all 0.6s;
+}
+
+.continue-btn:hover {
+  background-color: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.continue-btn:hover:before {
+  left: 100%;
+}
+
+.continue-btn:active {
+  transform: translateY(0);
+}
+
+/* Dots Animation */
+.dots span {
+  opacity: 0;
+  animation: dotPulse 1.5s infinite;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes iconRotate {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.5);
+  }
+  5%, 15% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+  20%, 100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.5);
+  }
+}
+
+@keyframes checkmarkAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Enhanced animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Result animation */
+.result-appear {
+  opacity: 0;
+  transform: scale(0.8);
+  animation: resultAppear 0.8s forwards;
+}
+
+@keyframes resultAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Shake animation for error */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+.shake-animation {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .main-container {
+    padding: 1.5rem;
+    width: 95%;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .result-value {
+    font-size: 2.5rem;
+  }
+}
